@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!-- 이런식으로 빈의 관계를 xml 태그로 규명해둘 수 있다 memberService 는 MemberServiceImpl 를 주입받음
+        그리고 constructor-arg는 생성자에 넘겨야 할 argument를 의미함 -->
+    <bean id="memberService" class="hello.core.member.MemberServiceImpl">
+        <constructor-arg name="memberRepository" ref="memberRepository" />
+    </bean>
+    <!-- constructor-arg는 이렇게 없으면 당연히 그냥 안쓰면 된다 있는경우만 -->
+    <bean id="memberRepository" class="hello.core.member.MemoryMemberRepository" />
+
+    <bean id="orderService" class="hello.core.order.OrderServiceImpl">
+        <constructor-arg name="memberRepository" ref="memberRepository" />
+        <constructor-arg name="discountPolicy" ref="discountPolicy" />
+    </bean>
+    <bean id="discountPolicy" class="hello.core.discount.RateDiscountPolicy" />
+</beans>
