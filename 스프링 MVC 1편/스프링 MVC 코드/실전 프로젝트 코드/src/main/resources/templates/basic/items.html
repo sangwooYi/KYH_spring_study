@@ -1,0 +1,47 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="utf-8">
+    <link href="../css/bootstrap.min.css" th:href="@{/css/bootstrap.min.css}" rel="stylesheet">
+</head>
+<body>
+<div class="container" style="max-width: 600px">
+    <div class="py-5 text-center">
+        <h2>상품 목록</h2>
+    </div>
+    <div class="row">
+        <div class="col">
+            <button class="btn btn-primary float-end" th:onclick="|location.href='@{/basic/items/add}'|" type="button">상품 등록</button>
+        </div>
+    </div>
+    <hr class="my-4">
+    <div>
+        <table class="table">
+            <thead>
+            <tr>
+                <th>ID</th>
+                <th>상품명</th>
+                <th>가격</th>
+                <th>수량</th>
+                <th>상세보기</th>
+            </tr>
+            </thead>
+            <tbody>
+                <!-- 굳이 이걸 div로 안감싸줘도 된다. 그냥 이렇게만 해줘도 이 tr 태그 단위로 반복해 줌-->
+                <tr th:each="item : ${items}">
+                    <!-- 일반 텍스트와 같이 혼용할 일 없으면 || 리터럴 대체 쓸 이유가 X -->
+                    <td><a th:href="@{/basic/items/{itemId}(itemId=${item.id})}" th:text="${item.id}">1</a></td>
+                    <!-- 위랑 아래랑 href 경로는 완전 동일, 리터럴 대체 써서 아래처럼 쓸수도, () 이용한 변수대입으로 위처럼 쓸수도-->
+                    <td><a th:href="@{|/basic/items/${item.id}|}" th:text="${item.itemName}">테스트 상품1</a></td>
+                    <td th:text="${item.price}">10000</td>
+                    <td th:text="${item.quantity}">10</td>
+                    <td>
+                        <button class="w-30 btn btn-secondary btn-sm" th:onclick="|location.href='@{/basic/items/{itemId}(itemId=${item.id})}'|" type="button">상세보기</button>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</div> <!-- /container -->
+</body>
+</html>
