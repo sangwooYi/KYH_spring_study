@@ -1,4 +1,4 @@
-package hello.advanced.trace;
+package hello.advanced.trace.hellotrace;
 
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Component;
@@ -10,6 +10,14 @@ public class HelloTraceV1 {
     private static final String START_PREFIX = "-->";
     private static final String COMPLETE_PREFIX = "<--";
     private static final String EX_PREFIX = "<X-";
+
+    public TraceStatus begin(TraceId traceId, String message) {
+        // 현재 시간 체크 그냥 System 에 있음! ( 단위 밀리초 10^-3초)
+        Long startTimeMs = System.currentTimeMillis();
+        log.info("[{}] {}{}",
+                traceId.getId(), addSpace(START_PREFIX, traceId.getLevel()), message);
+        return new TraceStatus(traceId, startTimeMs, message);
+    }
 
     public TraceStatus begin(String message) {
         TraceId traceId = new TraceId();
@@ -45,7 +53,7 @@ public class HelloTraceV1 {
     private String addSpace(String prefix, int level) {
         StringBuilder sb = new StringBuilder();
         for (int i = 0; i < level; i++) {
-            sb.append((i == level-1) ? "|" + prefix : "|    ");
+            sb.append(( i == level-1) ? "|" + prefix : "|    ");
         }
         return sb.toString();
     }
