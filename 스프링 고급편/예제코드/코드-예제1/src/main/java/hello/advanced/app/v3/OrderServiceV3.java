@@ -1,9 +1,9 @@
-package hello.advanced.app.v2;
+package hello.advanced.app.v3;
 
-import hello.advanced.trace.hellotrace.HelloTraceV1;
 import hello.advanced.trace.hellotrace.HelloTraceV2;
 import hello.advanced.trace.hellotrace.TraceId;
 import hello.advanced.trace.hellotrace.TraceStatus;
+import hello.advanced.trace.logtrace.LogTrace;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service;
 @Slf4j
 @Service
 @RequiredArgsConstructor
-public class OrderServiceV2 {
+public class OrderServiceV3 {
 
-    private final OrderRepositoryV2 orderRepository;
-    private final HelloTraceV2 trace;
+    private final OrderRepositoryV3 orderRepository;
+    private final LogTrace trace;
 
     public void orderItem(String itemId, TraceId traceId) {
 
         TraceStatus status = null;
         try {
-            status = trace.beginSync(traceId, "OrderServiceV2.orderItem()");
+            status = trace.begin("OrderServiceV3.orderItem()");
             orderRepository.save(itemId, status.getTraceId());
             trace.end(status);
         } catch (Exception e) {

@@ -1,9 +1,9 @@
-package hello.advanced.app.v2;
+package hello.advanced.app.v3;
 
-import hello.advanced.trace.hellotrace.HelloTraceV1;
 import hello.advanced.trace.hellotrace.HelloTraceV2;
 import hello.advanced.trace.hellotrace.TraceId;
 import hello.advanced.trace.hellotrace.TraceStatus;
+import hello.advanced.trace.logtrace.LogTrace;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Repository;
@@ -11,16 +11,16 @@ import org.springframework.stereotype.Repository;
 @Slf4j
 @Repository
 @RequiredArgsConstructor
-public class OrderRepositoryV2 {
+public class OrderRepositoryV3 {
 
-    private final HelloTraceV2 trace;
+    private final LogTrace trace;
 
     public void save(String itemId, TraceId traceId) {
 
         TraceStatus status = null;
 
         try {
-            status = trace.beginSync(traceId,"OrderRepositoryV2.save()");
+            status = trace.begin("OrderRepositoryV3.save()");
             // 저장로직
             if (itemId.equals("ex")) {
                 throw new IllegalStateException("예외 발생!");

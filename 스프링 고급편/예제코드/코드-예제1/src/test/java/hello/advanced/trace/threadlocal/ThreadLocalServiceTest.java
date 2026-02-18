@@ -1,0 +1,71 @@
+package hello.advanced.trace.threadlocal;
+
+import hello.advanced.trace.threadlocal.code.FieldService;
+import hello.advanced.trace.threadlocal.code.ThreadLocalService;
+import lombok.extern.slf4j.Slf4j;
+import org.junit.jupiter.api.Test;
+
+@Slf4j
+public class ThreadLocalServiceTest {
+    // 이렇게 직접 의존성 넣어주면 @SpringBootTest 필요 없음
+    private ThreadLocalService threadLocalService = new ThreadLocalService();
+
+    @Test
+    void field() {
+        log.info("main start!!");
+
+        Runnable userA = () -> {
+            threadLocalService.logic("userA");
+        };
+
+        Runnable userB = () -> {
+            threadLocalService.logic("userB");
+        };
+
+        Thread threadA = new Thread(userA);
+        threadA.setName("ThreadA");
+        Thread threadB = new Thread(userB);
+        threadB.setName("ThreadB");
+
+        // 동시성 문제 없는 코드
+        threadA.start();
+        sleep(2000);
+        threadB.start();
+        sleep(2000);
+        log.info("main exit");
+    }
+
+    // 동시성 문제 의도적으로 발생시킨 예제
+    @Test
+    void field_hecouseiErr() {
+        log.info("main start!!");
+
+        Runnable userA = () -> {
+            threadLocalService.logic("userA");
+        };
+
+        Runnable userB = () -> {
+            threadLocalService.logic("userB");
+        };
+
+        Thread threadA = new Thread(userA);
+        threadA.setName("ThreadA");
+        Thread threadB = new Thread(userB);
+        threadB.setName("ThreadB");
+
+        // 동시성 문제 없는 코드
+        threadA.start();
+        sleep(500);
+        threadB.start();
+        sleep(2000);
+        log.info("main exit");
+    }
+
+    private void sleep(int milliSec) {
+        try {
+            Thread.sleep(milliSec);
+        } catch (InterruptedException e) {
+            log.debug("InterruptedException", e);
+        }
+    }
+}
