@@ -1,8 +1,7 @@
 package hello.advanced.app.v4;
 
-import hello.advanced.trace.hellotrace.TraceStatus;
-import hello.advanced.trace.logtrace.LogTrace;
 import hello.advanced.trace.logtrace.ThreadLocalLogTrace;
+import hello.advanced.trace.template.AbstractTemplate;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -19,16 +18,17 @@ public class OrderControllerV4 {
 
     @GetMapping("/v4/request")
     public String request(@RequestParam String itemId) {
-        TraceStatus status = null;
-        try {
-            status = trace.begin("OrderControllerV4.request()");
-            orderService.orderItem(itemId, status.getTraceId());
-            trace.end(status);
-            return "OK";
-        } catch (Exception e) {
-            trace.exception(status, e);
-            return e.getMessage();
-        }
+
+        // 익명클래스 선언할 때 인자에 생성자에 넘겨줄 인자도 넘겨줘야 함
+        AbstractTemplate<String> template = new AbstractTemplate<>(trace) {
+            @Override
+            protected String call() {
+                orderService.orderItem(itemId);
+                return "OK";
+            }
+        };
+
+        return template.execute("OrderServiceV4.request() 실행!!");
     }
 
 }
