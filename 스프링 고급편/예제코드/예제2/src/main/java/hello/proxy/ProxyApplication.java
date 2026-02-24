@@ -2,6 +2,7 @@ package hello.proxy;
 
 import hello.proxy.config.AppV1Config;
 import hello.proxy.config.AppV2Config;
+import hello.proxy.config.v1_proxy.ConcreteProxyConfig;
 import hello.proxy.config.v1_proxy.InterfaceProxyConfig;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -17,7 +18,9 @@ import org.springframework.context.annotation.Import;
  * 정확히 말하면 @ComponentScan 이 스캔 대상이 위와 같은 기준으로 정해지며, @SpringBootApplication 에는
  * @ComponentScan 어노테이션이 포함되어있다!!
  */
-@Import({AppV1Config.class, AppV2Config.class, InterfaceProxyConfig.class})
+
+@Import(ConcreteProxyConfig.class)
+//@Import({AppV1Config.class, AppV2Config.class, InterfaceProxyConfig.class})
 @SpringBootApplication(scanBasePackages="hello.proxy.app")
 public class ProxyApplication {
 
