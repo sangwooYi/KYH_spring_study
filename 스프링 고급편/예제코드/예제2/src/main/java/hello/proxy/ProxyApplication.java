@@ -6,6 +6,7 @@ import hello.proxy.config.v1_proxy.ConcreteProxyConfig;
 import hello.proxy.config.v1_proxy.InterfaceProxyConfig;
 import hello.proxy.config.v2_dyamicproxy.DynamicProxyBasicConfig;
 import hello.proxy.config.v2_dyamicproxy.DynamicProxyFilterConfig;
+import hello.proxy.config.v3_proxyfactory.ProxyFactoryConfigV1;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Import;
@@ -21,7 +22,8 @@ import org.springframework.context.annotation.Import;
  * @ComponentScan 어노테이션이 포함되어있다!!
  */
 
-@Import({DynamicProxyFilterConfig.class, AppV2Config.class})
+@Import({ProxyFactoryConfigV1.class, AppV2Config.class})
+//@Import({DynamicProxyFilterConfig.class, AppV2Config.class})
 //@Import({DynamicProxyBasicConfig.class, AppV2Config.class})
 //@Import(DynamicProxyBasicConfig.class)
 //@Import(ConcreteProxyConfig.class)
