@@ -11,7 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.Import;
 
-@Import({AspectV5Oder.LogAspect.class, AspectV5Oder.TransactionAspect.class})
+@Import(AspectV6Advice.class)
+//@Import({AspectV5Oder.LogAspect.class, AspectV5Oder.TransactionAspect.class})
 //@Import(AspectV4.class)
 //@Import(AspectV3.class)
 //@Import(AspectV2.class)

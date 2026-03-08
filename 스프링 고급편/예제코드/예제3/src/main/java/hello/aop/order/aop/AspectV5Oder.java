@@ -7,10 +7,15 @@ import org.aspectj.lang.annotation.Aspect;
 import org.springframework.core.annotation.Order;
 
 /**
- *  어드바이저 순서 설정 Ver
+ *  어드바이스 순서 설정 Ver
  * @Order는 @Aspect 단위로만 설정 가능하다.
- * 따라서 어드바이저 순서를 지정하고싶으면 아래처럼
+ * 따라서 어드바이스 순서를 지정하고싶으면 아래처럼
  * @Aspect 단위로 내부 클래스로 설정할 수 밖에 없음!
+ *
+ * 어드바이스 종류에는
+ * @Around 외에도
+ * @Before / @AfterReturning / @AfterThrowing / @After 가 존재하지만
+ * 사실 @Around 만 쓰면 된다. 이게 모든 기능을 다 갖고 있는 것
  *
  */
 @Slf4j
@@ -33,14 +38,21 @@ public class AspectV5Oder {
         @Around("hello.aop.order.aop.Pointcuts.orderAndService()")
         public Object doTransaction(ProceedingJoinPoint joinPoint) throws Throwable {
             try {
+                // @Before
                 log.info("[트랜잭션 시작] {}", joinPoint.getSignature());
                 Object result = joinPoint.proceed();
+
+                // @AfterReturning
                 log.info("[트랜잭션 커밋] {}", joinPoint.getSignature());
                 return result;
             } catch (Exception e) {
+
+                // @AfterThrowing
                 log.error("[트랜잭션 롤백] {}", joinPoint.getSignature());
                 throw new IllegalStateException("doTransaction 예외 발생!");
             } finally {
+
+                // @After
                 log.info("[리소스 릴리스] {}", joinPoint.getSignature());
             }
 
