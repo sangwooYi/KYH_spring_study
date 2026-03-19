@@ -9,6 +9,7 @@ import org.springframework.stereotype.Component;
 @ClassAop
 @Component  // 스프링 빈 등록 위해
 public class MemberServiceImpl implements MemberService {
+    
     @Override
     @MethodAop("test value")
     public String hello(String param) {
